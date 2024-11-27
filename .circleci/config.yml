@@ -1,25 +1,33 @@
 version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:latest
+    resource_class: medium
+
 jobs:
-   build:
-     docker:
-       - image: circleci/node:latest
-     steps:
-       - checkout
-       - run: npm install
-       - run: CI=true npm run build
-   test:
-     docker:
-       - image: circleci/node:latest
-     steps:
-       - checkout
-       - run: npm install
-       - run: npm run test
-   hithere:
-     docker:
-       - image: circleci/node:latest
-     steps:
-       - checkout
-       - run: echo "Helllooooo!"
+  build:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: npm install
+      - run: CI=true npm run build
+
+  test:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+
+  hithere:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: echo "Helllooooo!"
+      - run: echo "Look at you!"
+
 workflows:
   version: 2
   build-test-and-lint:
@@ -29,4 +37,3 @@ workflows:
       - test:
           requires:
             - hithere
-            
